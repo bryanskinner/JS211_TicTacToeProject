@@ -4,6 +4,7 @@
 const assert = require('assert');
 // brings in the readline module to access the command line
 const readline = require('readline');
+const { brotliCompress } = require('zlib');
 // use the readline module to print out to the command line
 const rl = readline.createInterface({
   input: process.stdin,
@@ -34,26 +35,79 @@ const printBoard = () => {
 
 const horizontalWin = () => {
   // Your code here to check for horizontal wins
-}
+    if (board[0][0] === "X" && board[0][1] === "X" && board[0][2] === "X") return true;
+    if (board[1][0] === "X" && board[1][1] === "X" && board[1][2] === "X") return true;
+    if (board[2][0] === "X" && board[2][1] === "X" && board[2][2] === "X") return true;
+  
+    if (board[0][0] === "O" && board[0][1] === "O" && board[0][2] === "O") return true;
+    if (board[1][0] === "O" && board[1][1] === "O" && board[1][2] === "O") return true;
+    if (board[2][0] === "O" && board[2][1] === "O" && board[2][2] === "O") return true;
+
+  }
+  
 
 const verticalWin = () => {
   // Your code here to check for vertical wins
+
+    if (board[0][0] === "X" && board[1][0] === "X" && board[2][0] === "X") return true;
+    if (board[0][1] === "X" && board[1][1] === "X" && board[2][1] === "X") return true;
+    if (board[0][2] === "X" && board[1][2] === "X" && board[2][2] === "X") return true;
+  
+    if (board[0][0] === "O" && board[1][0] === "O" && board[2][0] === "O") return true;
+    if (board[0][1] === "O" && board[1][1] === "O" && board[2][1] === "O") return true;
+    if (board[0][2] === "O" && board[1][2] === "O" && board[2][2] === "O") return true;
+
 }
 
 const diagonalWin = () => {
   // Your code here to check for diagonal wins
-}
+
+    if (
+      (board[0][0] === "X" && board[1][1] === "X" && board[2][2] === "X") ||
+      (board[0][2] === "X" && board[1][1] === "X" && board[2][0] === "X")
+    ) {
+      return true; 
+    }
+    
+    if (
+      (board[0][0] === "O" && board[1][1] === "O" && board[2][2] === "O") ||
+      (board[0][2] === "O" && board[1][1] === "O" && board[2][0] === "O")
+    ) {
+      return true
+    }
+  
+  }
+  
 
 const checkForWin = () => {
   // Your code here call each of the check for types of wins
+  if (horizontalWin() || verticalWin() || diagonalWin()) {
+    return true
+  } else
+  return false
 }
+
 
 const ticTacToe = (row, column) => {
   // Your code here to place a marker on the board
   // then check for a win
+  board[row][column] = playerTurn;
+
+
+  if(playerTurn === "X") {
+    playerTurn = "O"
+  } else {
+    playerTurn = "X"
+  }
+
+
+  checkForWin()
 }
 
-const getPrompt = () => {
+
+
+
+function getPrompt() {
   printBoard();
   console.log("It's Player " + playerTurn + "'s turn.");
   rl.question('row: ', (row) => {
